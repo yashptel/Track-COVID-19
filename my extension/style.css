@@ -18,8 +18,8 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 .container {
-  width: auto;
-  height: auto;
+  width: fit-content;
+  height: fit-content;
   padding: 0 0 25px 0;
 }
 
@@ -100,7 +100,6 @@ body {
 
 .number {
   font-size: 30px;
-  font-weight: 600;
   padding: 5px 10px 0px 10px;
 }
 

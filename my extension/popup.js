@@ -151,12 +151,44 @@ const newData = async () => {
   const data = await getDataAsync();
   updateData(data);
 }
-
-(function init() {
-  const tab = document.querySelectorAll(".tab");
-  chrome.storage.sync.get("location", (e) => {
-    tab[1].querySelector('span').innerHTML = e.location.country;
+const getLocation = async (tab) => {
+  chrome.storage.sync.get("location", async (e) => {
+    if (e.location == null) {
+      const requestUrl = "http://ip-api.com/json";
+      let res = await fetch(
+        "" +requestUrl+ "", {
+          method: "GET",
+        }
+      );
+      res = await res.json();
+      chrome.storage.sync.set({
+        location: res
+      }, () => {})
+    } 
+    chrome.storage.sync.get("location", (e) => {
+      tab[1].querySelector('span').innerHTML = e.location.country;
+    })
+  });
+  chrome.storage.sync.get("autoLocate", async (e) => {
+    if (e.autoLocate === true) {
+      const requestUrl = "http://ip-api.com/json";
+      let res = await fetch(
+        "" +requestUrl+ "", {
+          method: "GET",
+        }
+      );
+      res = await res.json();
+      chrome.storage.sync.set({
+        location: res
+      }, () => {})
+    }
   })
+}
+
+
+(async function init() {
+  const tab = document.querySelectorAll(".tab");
+  await getLocation(tab);
   tab.forEach((element, idx) => {
     element.addEventListener("click", function() {
       tabClicked(tab, idx);

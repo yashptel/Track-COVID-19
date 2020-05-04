@@ -6,77 +6,28 @@ class dataSync {
   }
 }
 
-const getDataFromArray = (array, countryCode) => {
-  for (let index = 0; index < array.length; index++) {
-    if (array[index].country_code == countryCode) {
-      return array[index].latest;
-    }
-  }
-}
-
-const updateDataWorld = (data) => {
-  let world = new dataSync (
-    data.confirmed.latest,
-    data.deaths.latest,
-    data.recovered.latest
-  )
+const init = () => {
+  let world = new dataSync (0, 0, 0)
   chrome.storage.local.set({
     world: world
   }, () => {
 
   });
+  let country = new dataSync (0, 0, 0)
+  chrome.storage.local.set({
+    country: country
+  }, () => {
+  });
 }
 
-const updateDataCountry = (data) => {
-  chrome.storage.sync.get("location", (e) => {
-    let country = new dataSync (
-      getDataFromArray(data.confirmed.locations, e.location.countryCode),
-      getDataFromArray(data.deaths.locations, e.location.countryCode),
-      getDataFromArray(data.recovered.locations, e.location.countryCode)
-    )
-    chrome.storage.local.set({
-      country: country
-    }, () => {
-    })
-  })
-}
-
-const updateData = (data) => {
-  updateDataWorld(data);
-  updateDataCountry(data);
-}
-
-const getDataAsync = async() => {
-  const fetchURL = "https://coronavirus-tracker-api.herokuapp.com/all"
-  let res = await fetch(
-    "" +fetchURL+ "", {
-      method: "GET",
-    }
-  );
-  res = await res.json();
-  return res;
-}
-
-const firstRun = async() => {
-  const requestUrl = "http://ip-api.com/json";
-  let res = await fetch(
-    "" +requestUrl+ "", {
-      method: "GET",
-    }
-  );
-  res = await res.json();
-  chrome.storage.sync.set({
-    location: res
-  }, () => {})
-  chrome.storage.sync.set({autoLocate: true}, () => {
-  })
-  const data = await getDataAsync();
-  updateData(data);
-}
-
-chrome.runtime.onInstalled.addListener(function (details) {
+chrome.runtime.onInstalled.addListener( (details) => {
   if (details.reason == "install") {
-    firstRun();
+    const e = true;
+    try {
+      chrome.storage.sync.set({autoLocate: e}, () => {});
+    } catch (error) {
+      console.log(error);
+    }
   } else if(details.reason == "update") {
   }
 });
