@@ -125,6 +125,13 @@ const updateDataWorld = (data) => {
   });
 }
 
+const dataSet = () => {
+  const number = document.querySelectorAll(".number");
+    number.forEach(element => {
+      element.style.animation = "blink 1.2s ease-in-out 0";
+    });
+}
+
 const updateDataCountry = (data) => {
   chrome.storage.sync.get("location", (e) => {
     let country = new dataSync (
@@ -136,6 +143,7 @@ const updateDataCountry = (data) => {
       country: country
     }, () => {
       syncData();
+      dataSet();
     })
   })
 }

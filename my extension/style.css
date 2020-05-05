@@ -101,8 +101,19 @@ body {
 .number {
   font-size: 30px;
   padding: 5px 10px 0px 10px;
+  animation: blink 1.2s ease-in-out infinite;
 }
 
 .data-inner-container:nth-child(2) {
   visibility: hidden;
+}
+
+@keyframes blink{
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .1;
+  }
 }
