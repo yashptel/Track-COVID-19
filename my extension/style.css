@@ -117,3 +117,16 @@ body {
     opacity: .1;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --inactive-text_color: #ffffff;
+    --border-color: #282828;
+    --tab_border_background: #8ab4f8;
+  }
+
+  body {
+    background-color: #363636;
+    color: #eeeeee;
+  }
+}
